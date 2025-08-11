@@ -1,0 +1,62 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to ChoreTracker",
+        "description": "Enter the connection details for your ChoreTracker app.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key (optional)"
+        }
+      },
+      "zeroconf_confirm": {
+        "title": "Discovered ChoreTracker",
+        "description": "Found ChoreTracker instance '{name}' at {host}. Do you want to add it?"
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to ChoreTracker",
+      "invalid_auth": "Invalid authentication",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "ChoreTracker is already configured",
+      "cannot_connect": "Failed to connect to ChoreTracker"
+    }
+  },
+  "services": {
+    "complete_chore": {
+      "name": "Complete Chore",
+      "description": "Mark a chore as completed.",
+      "fields": {
+        "chore_id": {
+          "name": "Chore ID",
+          "description": "The ID of the chore to complete."
+        },
+        "user_id": {
+          "name": "User ID",
+          "description": "The ID of the user completing the chore."
+        }
+      }
+    },
+    "skip_chore": {
+      "name": "Skip Chore",
+      "description": "Skip a chore with a reason.",
+      "fields": {
+        "chore_id": {
+          "name": "Chore ID",
+          "description": "The ID of the chore to skip."
+        },
+        "user_id": {
+          "name": "User ID",
+          "description": "The ID of the user skipping the chore."
+        },
+        "reason": {
+          "name": "Reason",
+          "description": "The reason for skipping the chore."
+        }
+      }
+    }
+  }
+}

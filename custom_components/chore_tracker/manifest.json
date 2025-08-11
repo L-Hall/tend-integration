@@ -1,0 +1,21 @@
+{
+  "domain": "chore_tracker",
+  "name": "ChoreTracker",
+  "codeowners": ["@L-Hall"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/L-Hall/chore-tracker-integration",
+  "homekit": {},
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/L-Hall/chore-tracker-integration/issues",
+  "requirements": [],
+  "ssdp": [],
+  "version": "1.0.0",
+  "zeroconf": [
+    {
+      "type": "_choretracker._tcp.local.",
+      "name": "choretracker*"
+    }
+  ],
+  "integration_type": "hub"
+}
