@@ -1,0 +1,45 @@
+complete_chore:
+  name: Complete Chore
+  description: Mark a chore as completed
+  fields:
+    chore_id:
+      name: Chore ID
+      description: The ID of the chore to complete
+      required: true
+      example: "chore_123"
+      selector:
+        text:
+    user_id:
+      name: User ID
+      description: The ID of the user completing the chore
+      required: true
+      example: "user_456"
+      selector:
+        text:
+
+skip_chore:
+  name: Skip Chore
+  description: Skip a chore with a reason
+  fields:
+    chore_id:
+      name: Chore ID
+      description: The ID of the chore to skip
+      required: true
+      example: "chore_123"
+      selector:
+        text:
+    user_id:
+      name: User ID
+      description: The ID of the user skipping the chore
+      required: true
+      example: "user_456"
+      selector:
+        text:
+    reason:
+      name: Reason
+      description: The reason for skipping the chore
+      required: true
+      default: "Not needed today"
+      example: "Already done by someone else"
+      selector:
+        text:
