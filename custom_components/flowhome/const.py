@@ -1,6 +1,6 @@
-"""Constants for the ChoreTracker integration."""
+"""Constants for the FlowHome integration."""
 
-DOMAIN = "chore_tracker"
+DOMAIN = "flowhome"
 DEFAULT_PORT = 8080
 
 # Attributes

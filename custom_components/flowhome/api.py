@@ -1,4 +1,4 @@
-"""API client for ChoreTracker app."""
+"""API client for FlowHome app."""
 from __future__ import annotations
 
 import asyncio
@@ -13,8 +13,8 @@ from .const import DEFAULT_PORT
 _LOGGER = logging.getLogger(__name__)
 
 
-class ChoreTrackerAPI:
-    """ChoreTracker API client."""
+class FlowHomeAPI:
+    """FlowHome API client."""
     
     def __init__(
         self,
@@ -31,7 +31,7 @@ class ChoreTrackerAPI:
         self._base_url = f"http://{host}:{port}/api"
     
     async def async_get_info(self) -> dict[str, Any]:
-        """Get ChoreTracker app info."""
+        """Get FlowHome app info."""
         return await self._request("GET", "/info")
     
     async def async_get_chores(self) -> list[dict[str, Any]]:
@@ -86,6 +86,6 @@ class ChoreTrackerAPI:
                     response.raise_for_status()
                     return await response.json()
         except asyncio.TimeoutError as err:
-            raise ConnectionError("Timeout connecting to ChoreTracker") from err
+            raise ConnectionError("Timeout connecting to FlowHome") from err
         except aiohttp.ClientError as err:
-            raise ConnectionError(f"Error connecting to ChoreTracker: {err}") from err
+            raise ConnectionError(f"Error connecting to FlowHome: {err}") from err

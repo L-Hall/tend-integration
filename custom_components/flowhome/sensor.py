@@ -1,4 +1,4 @@
-"""Sensor platform for ChoreTracker."""
+"""Sensor platform for FlowHome."""
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -19,12 +19,12 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN, ATTR_POINTS, ATTR_STREAK, ATTR_USER_NAME
-from .coordinator import ChoreTrackerCoordinator
+from .coordinator import FlowHomeCoordinator
 
 
 @dataclass
-class ChoreTrackerSensorEntityDescription(SensorEntityDescription):
-    """Describes ChoreTracker sensor entity."""
+class FlowHomeSensorEntityDescription(SensorEntityDescription):
+    """Describes FlowHome sensor entity."""
     
     value_fn: Callable[[dict[str, Any]], Any] = lambda data: None
     attributes_fn: Callable[[dict[str, Any]], dict[str, Any]] = lambda data: {}
@@ -58,10 +58,10 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up ChoreTracker sensors."""
-    coordinator: ChoreTrackerCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    """Set up FlowHome sensors."""
+    coordinator: FlowHomeCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     
-    entities: list[ChoreTrackerSensor] = []
+    entities: list[FlowHomeSensor] = []
     
     # Wait for first data
     if not coordinator.data:
@@ -75,10 +75,10 @@ async def async_setup_entry(
         
         # Points sensor for each user
         entities.append(
-            ChoreTrackerSensor(
+            FlowHomeSensor(
                 coordinator=coordinator,
                 config_entry=config_entry,
-                description=ChoreTrackerSensorEntityDescription(
+                description=FlowHomeSensorEntityDescription(
                     key=f"user_{user_id}_points",
                     name=f"{user_name} Points",
                     native_unit_of_measurement="points",
@@ -100,7 +100,7 @@ async def async_setup_entry(
         
         # Last completed sensor for each chore
         entities.append(
-            ChoreTrackerChoreSensor(
+            FlowHomeChoreSensor(
                 coordinator=coordinator,
                 config_entry=config_entry,
                 chore_data=chore,
@@ -109,10 +109,10 @@ async def async_setup_entry(
     
     # Total household points sensor
     entities.append(
-        ChoreTrackerSensor(
+        FlowHomeSensor(
             coordinator=coordinator,
             config_entry=config_entry,
-            description=ChoreTrackerSensorEntityDescription(
+            description=FlowHomeSensorEntityDescription(
                 key="household_points",
                 name="Household Total Points",
                 native_unit_of_measurement="points",
@@ -129,16 +129,16 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class ChoreTrackerSensor(CoordinatorEntity[ChoreTrackerCoordinator], SensorEntity):
-    """ChoreTracker sensor entity."""
+class FlowHomeSensor(CoordinatorEntity[FlowHomeCoordinator], SensorEntity):
+    """FlowHome sensor entity."""
     
-    entity_description: ChoreTrackerSensorEntityDescription
+    entity_description: FlowHomeSensorEntityDescription
     
     def __init__(
         self,
-        coordinator: ChoreTrackerCoordinator,
+        coordinator: FlowHomeCoordinator,
         config_entry: ConfigEntry,
-        description: ChoreTrackerSensorEntityDescription,
+        description: FlowHomeSensorEntityDescription,
         user_id: str | None = None,
         user_name: str | None = None,
     ) -> None:
@@ -148,8 +148,8 @@ class ChoreTrackerSensor(CoordinatorEntity[ChoreTrackerCoordinator], SensorEntit
         self._attr_unique_id = f"{config_entry.entry_id}_{description.key}"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, config_entry.data["host"])},
-            name="ChoreTracker",
-            manufacturer="ChoreTracker",
+            name="FlowHome",
+            manufacturer="FlowHome",
             model="Hub",
         )
         self._user_id = user_id
@@ -169,12 +169,12 @@ class ChoreTrackerSensor(CoordinatorEntity[ChoreTrackerCoordinator], SensorEntit
         return attrs
 
 
-class ChoreTrackerChoreSensor(CoordinatorEntity[ChoreTrackerCoordinator], SensorEntity):
-    """ChoreTracker chore sensor entity."""
+class FlowHomeChoreSensor(CoordinatorEntity[FlowHomeCoordinator], SensorEntity):
+    """FlowHome chore sensor entity."""
     
     def __init__(
         self,
-        coordinator: ChoreTrackerCoordinator,
+        coordinator: FlowHomeCoordinator,
         config_entry: ConfigEntry,
         chore_data: dict[str, Any],
     ) -> None:
@@ -188,8 +188,8 @@ class ChoreTrackerChoreSensor(CoordinatorEntity[ChoreTrackerCoordinator], Sensor
         self._attr_device_class = SensorDeviceClass.TIMESTAMP
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, config_entry.data["host"])},
-            name="ChoreTracker",
-            manufacturer="ChoreTracker",
+            name="FlowHome",
+            manufacturer="FlowHome",
             model="Hub",
         )
     

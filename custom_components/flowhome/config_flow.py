@@ -1,4 +1,4 @@
-"""Config flow for ChoreTracker integration."""
+"""Config flow for FlowHome integration."""
 from __future__ import annotations
 
 import logging
@@ -15,7 +15,7 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN, DEFAULT_PORT
-from .api import ChoreTrackerAPI
+from .api import FlowHomeAPI
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
     """Validate the user input allows us to connect."""
     session = async_get_clientsession(hass)
-    api = ChoreTrackerAPI(
+    api = FlowHomeAPI(
         session=session,
         host=data[CONF_HOST],
         port=data.get(CONF_PORT, DEFAULT_PORT),
@@ -41,11 +41,11 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     # Test the connection
     info = await api.async_get_info()
     
-    return {"title": info.get("household_name", "ChoreTracker")}
+    return {"title": info.get("household_name", "FlowHome")}
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for ChoreTracker."""
+    """Handle a config flow for FlowHome."""
     
     VERSION = 1
     
@@ -91,7 +91,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     ) -> FlowResult:
         """Handle zeroconf discovery."""
         host = discovery_info.host
-        name = discovery_info.name.replace("._choretracker._tcp.local.", "")
+        name = discovery_info.name.replace("._flowhome._tcp.local.", "")
         
         # Check if already configured
         await self.async_set_unique_id(host)
@@ -103,7 +103,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         # Check if we can connect
         try:
             session = async_get_clientsession(self.hass)
-            api = ChoreTrackerAPI(
+            api = FlowHomeAPI(
                 session=session,
                 host=host,
                 port=discovery_info.port or DEFAULT_PORT,
@@ -117,10 +117,10 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_zeroconf_confirm(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Handle user-confirmation of discovered ChoreTracker."""
+        """Handle user-confirmation of discovered FlowHome."""
         if user_input is not None:
             return self.async_create_entry(
-                title=self._discovered_name or "ChoreTracker",
+                title=self._discovered_name or "FlowHome",
                 data={
                     CONF_HOST: self._discovered_host,
                     CONF_PORT: DEFAULT_PORT,

@@ -1,4 +1,4 @@
-"""ChoreTracker integration for Home Assistant."""
+"""FlowHome integration for Home Assistant."""
 from __future__ import annotations
 
 import logging
@@ -11,8 +11,8 @@ from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN
-from .coordinator import ChoreTrackerCoordinator
-from .api import ChoreTrackerAPI
+from .coordinator import FlowHomeCoordinator
+from .api import FlowHomeAPI
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -24,18 +24,18 @@ PLATFORMS: list[Platform] = [
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up ChoreTracker from a config entry."""
+    """Set up FlowHome from a config entry."""
     hass.data.setdefault(DOMAIN, {})
     
     session = async_get_clientsession(hass)
-    api = ChoreTrackerAPI(
+    api = FlowHomeAPI(
         session=session,
         host=entry.data["host"],
         port=entry.data.get("port", 8080),
         api_key=entry.data.get("api_key"),
     )
     
-    coordinator = ChoreTrackerCoordinator(hass, api)
+    coordinator = FlowHomeCoordinator(hass, api)
     await coordinator.async_config_entry_first_refresh()
     
     hass.data[DOMAIN][entry.entry_id] = coordinator
@@ -45,8 +45,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     device_registry.async_get_or_create(
         config_entry_id=entry.entry_id,
         identifiers={(DOMAIN, entry.data["host"])},
-        manufacturer="ChoreTracker",
-        model="ChoreTracker App",
+        manufacturer="FlowHome",
+        model="FlowHome App",
         name=entry.title,
         sw_version=coordinator.data.get("version", "unknown"),
     )

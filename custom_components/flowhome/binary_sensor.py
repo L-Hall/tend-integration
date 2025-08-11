@@ -1,4 +1,4 @@
-"""Binary sensor platform for ChoreTracker."""
+"""Binary sensor platform for FlowHome."""
 from __future__ import annotations
 
 from typing import Any
@@ -14,7 +14,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
-from .coordinator import ChoreTrackerCoordinator
+from .coordinator import FlowHomeCoordinator
 
 
 async def async_setup_entry(
@@ -22,10 +22,10 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up ChoreTracker binary sensors."""
-    coordinator: ChoreTrackerCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    """Set up FlowHome binary sensors."""
+    coordinator: FlowHomeCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     
-    entities: list[ChoreTrackerBinarySensor] = []
+    entities: list[FlowHomeBinarySensor] = []
     
     # Wait for first data
     if not coordinator.data:
@@ -35,7 +35,7 @@ async def async_setup_entry(
     chores = coordinator.data.get("chores", [])
     for chore in chores:
         entities.append(
-            ChoreTrackerBinarySensor(
+            FlowHomeBinarySensor(
                 coordinator=coordinator,
                 config_entry=config_entry,
                 chore_data=chore,
@@ -45,14 +45,14 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class ChoreTrackerBinarySensor(CoordinatorEntity[ChoreTrackerCoordinator], BinarySensorEntity):
-    """ChoreTracker binary sensor for chore overdue status."""
+class FlowHomeBinarySensor(CoordinatorEntity[FlowHomeCoordinator], BinarySensorEntity):
+    """FlowHome binary sensor for chore overdue status."""
     
     _attr_device_class = BinarySensorDeviceClass.PROBLEM
     
     def __init__(
         self,
-        coordinator: ChoreTrackerCoordinator,
+        coordinator: FlowHomeCoordinator,
         config_entry: ConfigEntry,
         chore_data: dict[str, Any],
     ) -> None:
@@ -64,8 +64,8 @@ class ChoreTrackerBinarySensor(CoordinatorEntity[ChoreTrackerCoordinator], Binar
         self._attr_name = f"{self._chore_name} Overdue"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, config_entry.data["host"])},
-            name="ChoreTracker",
-            manufacturer="ChoreTracker",
+            name="FlowHome",
+            manufacturer="FlowHome",
             model="Hub",
         )
     

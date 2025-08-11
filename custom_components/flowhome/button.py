@@ -1,4 +1,4 @@
-"""Button platform for ChoreTracker."""
+"""Button platform for FlowHome."""
 from __future__ import annotations
 
 from typing import Any
@@ -11,7 +11,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
-from .coordinator import ChoreTrackerCoordinator
+from .coordinator import FlowHomeCoordinator
 
 
 async def async_setup_entry(
@@ -19,10 +19,10 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up ChoreTracker buttons."""
-    coordinator: ChoreTrackerCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    """Set up FlowHome buttons."""
+    coordinator: FlowHomeCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     
-    entities: list[ChoreTrackerButton] = []
+    entities: list[FlowHomeButton] = []
     
     # Wait for first data
     if not coordinator.data:
@@ -32,7 +32,7 @@ async def async_setup_entry(
     chores = coordinator.data.get("chores", [])
     for chore in chores:
         entities.append(
-            ChoreTrackerButton(
+            FlowHomeButton(
                 coordinator=coordinator,
                 config_entry=config_entry,
                 chore_data=chore,
@@ -42,12 +42,12 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class ChoreTrackerButton(CoordinatorEntity[ChoreTrackerCoordinator], ButtonEntity):
-    """ChoreTracker button to complete a chore."""
+class FlowHomeButton(CoordinatorEntity[FlowHomeCoordinator], ButtonEntity):
+    """FlowHome button to complete a chore."""
     
     def __init__(
         self,
-        coordinator: ChoreTrackerCoordinator,
+        coordinator: FlowHomeCoordinator,
         config_entry: ConfigEntry,
         chore_data: dict[str, Any],
     ) -> None:
@@ -60,8 +60,8 @@ class ChoreTrackerButton(CoordinatorEntity[ChoreTrackerCoordinator], ButtonEntit
         self._attr_icon = "mdi:check-circle"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, config_entry.data["host"])},
-            name="ChoreTracker",
-            manufacturer="ChoreTracker",
+            name="FlowHome",
+            manufacturer="FlowHome",
             model="Hub",
         )
     

@@ -2,8 +2,8 @@
   "config": {
     "step": {
       "user": {
-        "title": "Connect to ChoreTracker",
-        "description": "Enter the connection details for your ChoreTracker app.",
+        "title": "Connect to FlowHome",
+        "description": "Enter the connection details for your FlowHome app.",
         "data": {
           "host": "Host",
           "port": "Port",
@@ -11,18 +11,18 @@
         }
       },
       "zeroconf_confirm": {
-        "title": "Discovered ChoreTracker",
-        "description": "Found ChoreTracker instance '{name}' at {host}. Do you want to add it?"
+        "title": "Discovered FlowHome",
+        "description": "Found FlowHome instance '{name}' at {host}. Do you want to add it?"
       }
     },
     "error": {
-      "cannot_connect": "Failed to connect to ChoreTracker",
+      "cannot_connect": "Failed to connect to FlowHome",
       "invalid_auth": "Invalid authentication",
       "unknown": "Unexpected error"
     },
     "abort": {
-      "already_configured": "ChoreTracker is already configured",
-      "cannot_connect": "Failed to connect to ChoreTracker"
+      "already_configured": "FlowHome is already configured",
+      "cannot_connect": "Failed to connect to FlowHome"
     }
   },
   "services": {

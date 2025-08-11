@@ -1,4 +1,4 @@
-"""DataUpdateCoordinator for ChoreTracker."""
+"""DataUpdateCoordinator for FlowHome."""
 from __future__ import annotations
 
 from datetime import timedelta
@@ -8,16 +8,16 @@ from typing import Any
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .api import ChoreTrackerAPI
+from .api import FlowHomeAPI
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
 
-class ChoreTrackerCoordinator(DataUpdateCoordinator[dict[str, Any]]):
-    """ChoreTracker data update coordinator."""
+class FlowHomeCoordinator(DataUpdateCoordinator[dict[str, Any]]):
+    """FlowHome data update coordinator."""
     
-    def __init__(self, hass: HomeAssistant, api: ChoreTrackerAPI) -> None:
+    def __init__(self, hass: HomeAssistant, api: FlowHomeAPI) -> None:
         """Initialize coordinator."""
         super().__init__(
             hass,
