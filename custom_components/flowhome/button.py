@@ -20,7 +20,8 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up FlowHome buttons."""
-    coordinator: FlowHomeCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    data = hass.data[DOMAIN][config_entry.entry_id]
+    coordinator: FlowHomeCoordinator = data["coordinator"]
     
     entities: list[FlowHomeButton] = []
     

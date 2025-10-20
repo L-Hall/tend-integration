@@ -21,3 +21,7 @@ ATTR_STREAK = "streak"
 SERVICE_COMPLETE_CHORE = "complete_chore"
 SERVICE_SKIP_CHORE = "skip_chore"
 SERVICE_ASSIGN_CHORE = "assign_chore"
+SERVICE_REGISTER_WEBHOOK = "register_webhook"
+SERVICE_UNREGISTER_WEBHOOK = "unregister_webhook"
+
+EVENT_WEBHOOK_RECEIVED = "flowhome_webhook_received"

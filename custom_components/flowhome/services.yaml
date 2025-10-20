@@ -28,6 +28,43 @@ skip_chore:
       example: "chore_123"
       selector:
         text:
+
+register_webhook:
+  name: Register FlowHome Webhook
+  description: Register a webhook that the Flow mobile app can call when chores are completed.
+  fields:
+    webhook_id:
+      name: Webhook ID
+      description: Optional existing webhook identifier to reuse. Leave blank to generate a new one.
+      required: false
+      example: "flowhome-123"
+      selector:
+        text:
+    name:
+      name: Name
+      description: Descriptive name for the webhook entry inside Home Assistant.
+      required: false
+      default: "FlowHome webhook"
+      selector:
+        text:
+    local_only:
+      name: Local only
+      description: Restrict the webhook to requests from the local network.
+      required: false
+      default: true
+      selector:
+        boolean:
+
+unregister_webhook:
+  name: Unregister FlowHome Webhook
+  description: Remove a FlowHome webhook and stop accepting calls to it.
+  fields:
+    webhook_id:
+      name: Webhook ID
+      description: Identifier of the webhook to remove.
+      required: true
+      selector:
+        text:
     user_id:
       name: User ID
       description: The ID of the user skipping the chore
