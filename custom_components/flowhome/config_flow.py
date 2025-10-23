@@ -39,7 +39,10 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     )
     
     # Test the connection
-    info = await api.async_get_info()
+    try:
+        info = await api.async_get_info()
+    except ConnectionError as err:
+        raise CannotConnect from err
     
     return {"title": info.get("household_name", "FlowHome")}
 
@@ -142,3 +145,5 @@ class CannotConnect(HomeAssistantError):
 
 class InvalidAuth(HomeAssistantError):
     """Error to indicate there is invalid auth."""
+
+
