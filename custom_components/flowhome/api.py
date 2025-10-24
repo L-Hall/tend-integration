@@ -4,6 +4,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from typing import Any
+from urllib.parse import urlparse
 
 import aiohttp
 import async_timeout
@@ -22,13 +23,22 @@ class FlowHomeAPI:
         host: str,
         port: int = DEFAULT_PORT,
         api_key: str | None = None,
+        use_ssl: bool | None = None,
     ) -> None:
         """Initialize API client."""
         self._session = session
-        self._host = host
-        self._port = port
+        normalized_host, normalized_port, resolved_ssl = self.normalize_connection(
+            host,
+            port,
+            use_ssl,
+        )
+        self._host = normalized_host
+        self._port = normalized_port
+        self._use_ssl = resolved_ssl
         self._api_key = api_key
-        self._base_url = f"http://{host}:{port}/api"
+        scheme = "https" if self._use_ssl else "http"
+        port_suffix = f":{self._port}" if self._port else ""
+        self._base_url = f"{scheme}://{self._host}{port_suffix}/api"
     
     async def async_get_info(self) -> dict[str, Any]:
         """Get FlowHome app info."""
@@ -89,3 +99,37 @@ class FlowHomeAPI:
             raise ConnectionError("Timeout connecting to FlowHome") from err
         except aiohttp.ClientError as err:
             raise ConnectionError(f"Error connecting to FlowHome: {err}") from err
+
+    @staticmethod
+    def normalize_connection(
+        host: str,
+        port: int | None = None,
+        use_ssl: bool | None = None,
+    ) -> tuple[str, int, bool]:
+        """Normalize host, port, and SSL usage from user/discovery input."""
+        if not host:
+            raise ConnectionError("Host is required")
+
+        raw_host = host.strip()
+        raw_host = raw_host.rstrip("/")
+
+        url_to_parse = raw_host if "://" in raw_host else f"http://{raw_host}"
+        parsed = urlparse(url_to_parse)
+
+        hostname = parsed.hostname or parsed.path
+        if not hostname:
+            raise ConnectionError("Invalid host provided")
+
+        detected_port = parsed.port
+        has_explicit_port = detected_port is not None
+        scheme_ssl = parsed.scheme == "https"
+
+        # Respect explicit host port even when a default was supplied downstream.
+        if has_explicit_port and (port in (None, 0, DEFAULT_PORT)):
+            resolved_port = detected_port
+        else:
+            resolved_port = port or detected_port or DEFAULT_PORT
+
+        resolved_ssl = use_ssl if use_ssl is not None else scheme_ssl
+
+        return hostname, resolved_port, resolved_ssl

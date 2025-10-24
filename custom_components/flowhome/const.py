@@ -25,3 +25,5 @@ SERVICE_REGISTER_WEBHOOK = "register_webhook"
 SERVICE_UNREGISTER_WEBHOOK = "unregister_webhook"
 
 EVENT_WEBHOOK_RECEIVED = "flowhome_webhook_received"
+
+CONF_USE_SSL = "use_ssl"

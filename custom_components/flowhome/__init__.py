@@ -19,6 +19,7 @@ from .const import (
     SERVICE_SKIP_CHORE,
     SERVICE_REGISTER_WEBHOOK,
     SERVICE_UNREGISTER_WEBHOOK,
+    CONF_USE_SSL,
 )
 from .coordinator import FlowHomeCoordinator
 from .api import FlowHomeAPI
@@ -70,6 +71,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         host=entry.data["host"],
         port=entry.data.get("port", 8080),
         api_key=entry.data.get("api_key"),
+        use_ssl=entry.data.get(CONF_USE_SSL),
     )
 
     coordinator = FlowHomeCoordinator(hass, api)
