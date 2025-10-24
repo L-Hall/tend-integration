@@ -129,5 +129,3 @@ class FlowHomeWebhookManager:
     async def _async_save(self) -> None:
         """Persist webhook metadata to disk."""
         await self._store.async_save(self._webhooks)
-
-*** End File
