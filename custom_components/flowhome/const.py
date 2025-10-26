@@ -1,7 +1,8 @@
 """Constants for the FlowHome integration."""
 
 DOMAIN = "flowhome"
-DEFAULT_PORT = 8080
+DEFAULT_HOST = "flow-api-service-87497786761.europe-west1.run.app"
+DEFAULT_PORT = 443
 
 # Attributes
 ATTR_CHORE_ID = "chore_id"

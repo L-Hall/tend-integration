@@ -14,14 +14,14 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN, DEFAULT_PORT, CONF_USE_SSL
+from .const import DOMAIN, DEFAULT_HOST, DEFAULT_PORT, CONF_USE_SSL
 from .api import FlowHomeAPI
 
 _LOGGER = logging.getLogger(__name__)
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
-        vol.Required(CONF_HOST): str,
+        vol.Optional(CONF_HOST, default=DEFAULT_HOST): str,
         vol.Optional(CONF_PORT, default=DEFAULT_PORT): int,
         vol.Optional("api_key"): str,
     }
@@ -31,8 +31,9 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
     """Validate the user input allows us to connect."""
     session = async_get_clientsession(hass)
+    host_input = data.get(CONF_HOST, DEFAULT_HOST)
     host, port, use_ssl = FlowHomeAPI.normalize_connection(
-        data[CONF_HOST],
+        host_input,
         data.get(CONF_PORT),
     )
     api = FlowHomeAPI(
@@ -177,5 +178,4 @@ class CannotConnect(HomeAssistantError):
 
 class InvalidAuth(HomeAssistantError):
     """Error to indicate there is invalid auth."""
-
 
