@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Connect to Tend",
-        "description": "Enter the connection details for your Tend app.",
+        "description": "Enter the connection details for your Tend app. Use the hosted URL (HTTPS, port 443) or your local hub IP (HTTP, port 8080).",
         "data": {
           "host": "Host",
           "port": "Port",

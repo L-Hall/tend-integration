@@ -1,6 +1,7 @@
 """DataUpdateCoordinator for FlowHome."""
 from __future__ import annotations
 
+import asyncio
 from datetime import timedelta
 import logging
 from typing import Any
@@ -31,8 +32,11 @@ class FlowHomeCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         """Fetch data from API endpoint."""
         try:
             # Fetch all data in parallel
-            info, chores, users, leaderboard = await self.hass.async_add_executor_job(
-                self._fetch_all_data
+            info, chores, users, leaderboard = await asyncio.gather(
+                self.api.async_get_info(),
+                self.api.async_get_chores(),
+                self.api.async_get_users(),
+                self.api.async_get_leaderboard(),
             )
             
             return {
@@ -45,11 +49,4 @@ class FlowHomeCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         except ConnectionError as err:
             raise UpdateFailed(f"Error communicating with API: {err}") from err
     
-    async def _fetch_all_data(self) -> tuple:
-        """Fetch all data from the API."""
-        info = await self.api.async_get_info()
-        chores = await self.api.async_get_chores()
-        users = await self.api.async_get_users()
-        leaderboard = await self.api.async_get_leaderboard()
-        
-        return info, chores, users, leaderboard
+    # Note: executor-based fetch was replaced with direct asyncio.gather above.

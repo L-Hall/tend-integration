@@ -110,11 +110,13 @@ Tend is a gamified household chore management system that helps families track a
    
    You'll see a configuration dialog. Enter:
    
-   - **Host**: The Tend API endpoint
-     - Example: `https://flow-api-service-87497786761.europe-west1.run.app`
+   - **Host**: The Tend API endpoint or your local hub IP
+     - Hosted example: `https://flow-api-service-87497786761.europe-west1.run.app`
+     - Local example: `http://192.168.1.132`
    
-   - **Port**: `443` (HTTPS)
-     - Change only if you have a custom endpoint/port
+   - **Port**:
+     - Hosted: `443`
+     - Local hub: `8080`
    
    - **API Key**: (Optional) 
      - Leave blank unless you've set up authentication in the app
@@ -125,7 +127,7 @@ Tend is a gamified household chore management system that helps families track a
 
 ### Auto-Discovery 🔍
 
-If your Tend app is running on the same network, Home Assistant might automatically discover it. If you use the hosted endpoint (`flow-api-service-87497786761.europe-west1.run.app`), add it manually with port 443.
+If your Tend app is running on the same network, Home Assistant might automatically discover it. If you use the hosted endpoint (`flow-api-service-87497786761.europe-west1.run.app`), add it manually with port 443. For local hubs, enter the local IP and port 8080.
 
 1. Check the "Discovered" section in Settings → Devices & Services
 2. If Tend appears, click "Configure"
@@ -149,7 +151,11 @@ If your Tend app is running on the same network, Home Assistant might automatica
 
 Test that the API is accessible:
 ```bash
+# Hosted
 curl https://flow-api-service-87497786761.europe-west1.run.app/api/info
+
+# Local (if your hub exposes HTTP)
+curl http://192.168.1.132:8080/api/info
 ```
 
 You should see a JSON response with app information.
