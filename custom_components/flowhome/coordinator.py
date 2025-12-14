@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 from datetime import timedelta
+import hashlib
 import logging
 from typing import Any
 
@@ -40,7 +41,9 @@ class FlowHomeCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             )
             
             chores = [_normalize_chore(chore) for chore in chores_raw]
+            chores = [c for c in chores if c.get("id")]
             users = [_normalize_user(user) for user in users_raw]
+            users = [u for u in users if u.get("id")]
             # If leaderboard is missing, derive a basic one from users
             leaderboard = leaderboard_raw or {"users": {u["id"]: u for u in users}}
             
@@ -58,9 +61,14 @@ class FlowHomeCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
 def _normalize_chore(chore: dict[str, Any]) -> dict[str, Any]:
     """Map upstream chore payload to the entity schema."""
+    title = chore.get("title") or chore.get("name") or "Unknown"
+    cid = chore.get("id") or chore.get("chore_id")
+    if not cid and title != "Unknown":
+        # Fallback stable id based on title if API doesn't provide one
+        cid = hashlib.md5(title.encode("utf-8")).hexdigest()
     return {
-        "id": chore.get("id") or chore.get("chore_id"),
-        "title": chore.get("title") or chore.get("name") or "Unknown",
+        "id": cid,
+        "title": title,
         "description": chore.get("description"),
         "points": chore.get("points"),
         "assigned_to": chore.get("assigned_to"),
