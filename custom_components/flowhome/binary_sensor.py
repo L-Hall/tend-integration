@@ -1,4 +1,4 @@
-"""Binary sensor platform for FlowHome."""
+"""Binary sensor platform for Tend."""
 from __future__ import annotations
 
 from typing import Any
@@ -22,7 +22,7 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up FlowHome binary sensors."""
+    """Set up Tend binary sensors."""
     coordinator: FlowHomeCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     
     entities: list[FlowHomeBinarySensor] = []
@@ -46,7 +46,7 @@ async def async_setup_entry(
 
 
 class FlowHomeBinarySensor(CoordinatorEntity[FlowHomeCoordinator], BinarySensorEntity):
-    """FlowHome binary sensor for chore overdue status."""
+    """Tend binary sensor for chore overdue status."""
     
     _attr_device_class = BinarySensorDeviceClass.PROBLEM
     
@@ -64,8 +64,8 @@ class FlowHomeBinarySensor(CoordinatorEntity[FlowHomeCoordinator], BinarySensorE
         self._attr_name = f"{self._chore_name} Overdue"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, config_entry.data["host"])},
-            name="FlowHome",
-            manufacturer="FlowHome",
+            name="Tend",
+            manufacturer="Unburden LLP",
             model="Hub",
         )
     

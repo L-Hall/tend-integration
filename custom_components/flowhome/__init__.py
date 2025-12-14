@@ -1,4 +1,4 @@
-"""FlowHome integration for Home Assistant."""
+"""Tend integration for Home Assistant."""
 from __future__ import annotations
 
 import logging
@@ -24,7 +24,7 @@ PLATFORMS: list[Platform] = [
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up FlowHome from a config entry."""
+    """Set up Tend from a config entry."""
     hass.data.setdefault(DOMAIN, {})
     
     session = async_get_clientsession(hass)
@@ -45,8 +45,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     device_registry.async_get_or_create(
         config_entry_id=entry.entry_id,
         identifiers={(DOMAIN, entry.data["host"])},
-        manufacturer="FlowHome",
-        model="FlowHome App",
+        manufacturer="Unburden LLP",
+        model="Tend App",
         name=entry.title,
         sw_version=coordinator.data.get("version", "unknown"),
     )

@@ -1,4 +1,4 @@
-"""Sensor platform for FlowHome."""
+"""Sensor platform for Tend."""
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -58,7 +58,7 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up FlowHome sensors."""
+    """Set up Tend sensors."""
     coordinator: FlowHomeCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     
     entities: list[FlowHomeSensor] = []
@@ -130,7 +130,7 @@ async def async_setup_entry(
 
 
 class FlowHomeSensor(CoordinatorEntity[FlowHomeCoordinator], SensorEntity):
-    """FlowHome sensor entity."""
+    """Tend sensor entity."""
     
     entity_description: FlowHomeSensorEntityDescription
     
@@ -148,9 +148,9 @@ class FlowHomeSensor(CoordinatorEntity[FlowHomeCoordinator], SensorEntity):
         self._attr_unique_id = f"{config_entry.entry_id}_{description.key}"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, config_entry.data["host"])},
-            name="FlowHome",
-            manufacturer="FlowHome",
-            model="Hub",
+            name="Tend",
+            manufacturer="Unburden LLP",
+            model="Tend Hub",
         )
         self._user_id = user_id
         self._user_name = user_name
@@ -170,7 +170,7 @@ class FlowHomeSensor(CoordinatorEntity[FlowHomeCoordinator], SensorEntity):
 
 
 class FlowHomeChoreSensor(CoordinatorEntity[FlowHomeCoordinator], SensorEntity):
-    """FlowHome chore sensor entity."""
+    """Tend chore sensor entity."""
     
     def __init__(
         self,
@@ -188,9 +188,9 @@ class FlowHomeChoreSensor(CoordinatorEntity[FlowHomeCoordinator], SensorEntity):
         self._attr_device_class = SensorDeviceClass.TIMESTAMP
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, config_entry.data["host"])},
-            name="FlowHome",
-            manufacturer="FlowHome",
-            model="Hub",
+            name="Tend",
+            manufacturer="Unburden LLP",
+            model="Tend Hub",
         )
     
     @property

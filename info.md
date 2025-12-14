@@ -1,10 +1,10 @@
-# FlowHome Integration
+# Tend Integration
 
 {% if installed %}
 
 ## Configuration
 
-The integration is configured via the UI. Go to Settings → Devices & Services → Add Integration → FlowHome.
+The integration is configured via the UI. Go to Settings → Devices & Services → Add Integration → Tend.
 
 ## Entities
 
@@ -16,19 +16,19 @@ This integration creates:
 
 {% else %}
 
-## What is FlowHome?
+## What is Tend?
 
-FlowHome is a gamified household chore management app that helps families track and complete household tasks. This integration connects your FlowHome app to Home Assistant.
+Tend is a gamified household chore management app that helps families track and complete household tasks. This integration connects your Tend app to Home Assistant.
 
 ## Features
 
-- Auto-discovery of FlowHome apps on your network
+- Auto-discovery of Tend apps on your network
 - Real-time tracking of chore completion and points
 - Create automations based on chore status
-- Control FlowHome from Home Assistant
+- Control Tend from Home Assistant
 
 {% endif %}
 
 ## Example Automations
 
-See the [README](https://github.com/L-Hall/flowhome-integration) for automation examples.
+See the [README](https://github.com/L-Hall/tend-integration) for automation examples.

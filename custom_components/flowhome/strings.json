@@ -2,8 +2,8 @@
   "config": {
     "step": {
       "user": {
-        "title": "Connect to FlowHome",
-        "description": "Enter the connection details for your FlowHome app.",
+        "title": "Connect to Tend",
+        "description": "Enter the connection details for your Tend app.",
         "data": {
           "host": "Host",
           "port": "Port",
@@ -11,18 +11,18 @@
         }
       },
       "zeroconf_confirm": {
-        "title": "Discovered FlowHome",
-        "description": "Found FlowHome instance '{name}' at {host}. Do you want to add it?"
+        "title": "Discovered Tend",
+        "description": "Found Tend instance '{name}' at {host}. Do you want to add it?"
       }
     },
     "error": {
-      "cannot_connect": "Failed to connect to FlowHome",
+      "cannot_connect": "Failed to connect to Tend",
       "invalid_auth": "Invalid authentication",
       "unknown": "Unexpected error"
     },
     "abort": {
-      "already_configured": "FlowHome is already configured",
-      "cannot_connect": "Failed to connect to FlowHome"
+      "already_configured": "Tend is already configured",
+      "cannot_connect": "Failed to connect to Tend"
     }
   },
   "services": {

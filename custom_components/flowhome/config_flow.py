@@ -1,4 +1,4 @@
-"""Config flow for FlowHome integration."""
+"""Config flow for Tend integration."""
 from __future__ import annotations
 
 import logging
@@ -41,11 +41,11 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     # Test the connection
     info = await api.async_get_info()
     
-    return {"title": info.get("household_name", "FlowHome")}
+    return {"title": info.get("household_name", "Tend")}
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for FlowHome."""
+    """Handle a config flow for Tend."""
     
     VERSION = 1
     
@@ -117,10 +117,10 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_zeroconf_confirm(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Handle user-confirmation of discovered FlowHome."""
+        """Handle user-confirmation of discovered Tend."""
         if user_input is not None:
             return self.async_create_entry(
-                title=self._discovered_name or "FlowHome",
+                title=self._discovered_name or "Tend",
                 data={
                     CONF_HOST: self._discovered_host,
                     CONF_PORT: DEFAULT_PORT,

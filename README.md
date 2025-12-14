@@ -1,14 +1,14 @@
-# 🏠 FlowHome for Home Assistant
+# 🏠 Tend for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
-[![GitHub Release](https://img.shields.io/github/release/L-Hall/flowhome-integration.svg)](https://github.com/L-Hall/flowhome-integration/releases)
-[![License](https://img.shields.io/github/license/L-Hall/flowhome-integration.svg)](LICENSE)
+[![GitHub Release](https://img.shields.io/github/release/L-Hall/tend-integration.svg)](https://github.com/L-Hall/tend-integration/releases)
+[![License](https://img.shields.io/github/license/L-Hall/tend-integration.svg)](LICENSE)
 
-Turn household chores into a game! FlowHome brings gamification to your smart home by connecting your household chore management with Home Assistant automations.
+Turn household chores into a game! Tend brings gamification to your smart home by connecting your household chore management with Home Assistant automations.
 
-## ✨ What is FlowHome?
+## ✨ What is Tend?
 
-FlowHome is a gamified household chore management system that helps families track and complete household tasks through points, streaks, and friendly competition. This integration connects your FlowHome app with Home Assistant, enabling powerful automations and monitoring.
+Tend is a gamified household chore management system that helps families track and complete household tasks through points, streaks, and friendly competition. This integration connects your Tend app with Home Assistant, enabling powerful automations and monitoring.
 
 ### Key Features
 
@@ -39,16 +39,16 @@ FlowHome is a gamified household chore management system that helps families tra
    - Click the 3-dot menu (⋮) in the top right
    - Select "Custom repositories"
    
-3. **Add FlowHome Repository**
-   - Repository URL: `https://github.com/L-Hall/flowhome-integration`
+3. **Add Tend Repository**
+   - Repository URL: `https://github.com/L-Hall/tend-integration`
    - Category: Select "Integration"
    - Click "Add"
 
-4. **Install FlowHome**
+4. **Install Tend**
    - Go back to HACS main page
    - Click "+ Explore & Download Repositories"
-   - Search for "FlowHome"
-   - Click on FlowHome
+   - Search for "Tend"
+   - Click on Tend
    - Click "Download" button
    - Select the latest version
    - Click "Download" again
@@ -65,12 +65,12 @@ FlowHome is a gamified household chore management system that helps families tra
    ```bash
    # Option A: Using git
    cd /config
-   git clone https://github.com/L-Hall/flowhome-integration.git temp_flowhome
-   cp -r temp_flowhome/custom_components/flowhome custom_components/
-   rm -rf temp_flowhome
+   git clone https://github.com/L-Hall/tend-integration.git temp_tend
+   cp -r temp_tend/custom_components/flowhome custom_components/
+   rm -rf temp_tend
    
    # Option B: Download ZIP
-   # 1. Go to https://github.com/L-Hall/flowhome-integration
+   # 1. Go to https://github.com/L-Hall/tend-integration
    # 2. Click "Code" → "Download ZIP"
    # 3. Extract the ZIP file
    # 4. Copy the 'custom_components/flowhome' folder to your Home Assistant 'custom_components' directory
@@ -102,45 +102,44 @@ FlowHome is a gamified household chore management system that helps families tra
    - Go to Settings → Devices & Services
    - Click "+ Add Integration"
 
-2. **Search for FlowHome**
-   - Type "FlowHome" in the search box
-   - Click on "FlowHome" when it appears
+2. **Search for Tend**
+   - Type "Tend" in the search box
+   - Click on "Tend" when it appears
 
 3. **Configure Connection**
    
    You'll see a configuration dialog. Enter:
    
-   - **Host**: The IP address of the device running your FlowHome app
-     - Example: `192.168.1.100`
-     - To find this: Check your router's device list or the FlowHome app settings
+   - **Host**: The Tend API endpoint
+     - Example: `https://flow-api-service-87497786761.europe-west1.run.app`
    
-   - **Port**: The API port (default is `8080`)
-     - Only change if you've configured a different port in the app
+   - **Port**: `443` (HTTPS)
+     - Change only if you have a custom endpoint/port
    
    - **API Key**: (Optional) 
      - Leave blank unless you've set up authentication in the app
 
 4. **Click Submit**
-   - The integration will connect to your FlowHome app
+   - The integration will connect to your Tend app
    - If successful, you'll see "Success!" message
 
 ### Auto-Discovery 🔍
 
-If your FlowHome app is running on the same network, Home Assistant might automatically discover it:
+If your Tend app is running on the same network, Home Assistant might automatically discover it. If you use the hosted endpoint (`flow-api-service-87497786761.europe-west1.run.app`), add it manually with port 443.
 
 1. Check the "Discovered" section in Settings → Devices & Services
-2. If FlowHome appears, click "Configure"
+2. If Tend appears, click "Configure"
 3. Confirm the details and click "Submit"
 
 ---
 
-## 📱 FlowHome App Setup
+## 📱 Tend App Setup
 
-**Important**: Your FlowHome app needs to have its API server enabled.
+**Important**: Your Tend app needs to have its API server enabled.
 
-### Enable API Server in FlowHome App
+### Enable API Server in Tend App
 
-1. Open the FlowHome app
+1. Open the Tend app
 2. Go to Settings → Integrations
 3. Toggle "Enable Home Assistant Integration" ON
 4. Note the displayed IP address and port
@@ -150,7 +149,7 @@ If your FlowHome app is running on the same network, Home Assistant might automa
 
 Test that the API is accessible:
 ```bash
-curl http://YOUR_FLOWHOME_IP:8080/api/info
+curl https://flow-api-service-87497786761.europe-west1.run.app/api/info
 ```
 
 You should see a JSON response with app information.
@@ -159,7 +158,7 @@ You should see a JSON response with app information.
 
 ## 🎛️ Available Entities
 
-Once configured, FlowHome creates these entities in Home Assistant:
+Once configured, Tend creates these entities in Home Assistant:
 
 ### Sensors 📊
 - `sensor.flowhome_[name]_points` - Individual user points
@@ -298,21 +297,20 @@ entities:
 3. **Clear browser cache**: Ctrl+F5 or Cmd+Shift+R
 4. **Check logs**: Settings → System → Logs for any error messages
 
-### Can't Connect to FlowHome App
+### Can't Connect to Tend App
 
 1. **Verify network**: Ensure both devices are on the same network
-2. **Check firewall**: Port 8080 must be open
+2. **Check firewall**: Port 443 must be open outbound from Home Assistant
 3. **Test connection**: 
    ```bash
-   ping YOUR_FLOWHOME_IP
-   curl http://YOUR_FLOWHOME_IP:8080/api/info
+   curl https://flow-api-service-87497786761.europe-west1.run.app/api/info
    ```
-4. **Check app settings**: Ensure API server is enabled in FlowHome app
+4. **Check app settings**: Ensure API server is enabled in the Tend app
 
 ### Entities Not Updating
 
-1. **Check FlowHome app**: Ensure it's running and not in sleep mode
-2. **Reload integration**: Settings → Devices & Services → FlowHome → ⋮ → Reload
+1. **Check Tend app**: Ensure it's running and not in sleep mode
+2. **Reload integration**: Settings → Devices & Services → Tend → ⋮ → Reload
 3. **Check update interval**: Default is 30 seconds
 4. **Review logs**: Look for connection errors in Home Assistant logs
 
@@ -320,7 +318,7 @@ entities:
 
 - **"Failed to connect"**: Check IP address and port
 - **"Invalid authentication"**: Verify API key if set
-- **"No data received"**: Ensure FlowHome app is running
+- **"No data received"**: Ensure Tend app is running
 - **"Already configured"**: Remove existing configuration first
 
 ---
@@ -329,10 +327,10 @@ entities:
 
 ### Getting Help
 
-1. **Check the Wiki**: [GitHub Wiki](https://github.com/L-Hall/flowhome-integration/wiki)
-2. **Search Issues**: [Existing Issues](https://github.com/L-Hall/flowhome-integration/issues)
+1. **Check the Wiki**: [GitHub Wiki](https://github.com/L-Hall/tend-integration/wiki)
+2. **Search Issues**: [Existing Issues](https://github.com/L-Hall/tend-integration/issues)
 3. **Community Forum**: [Home Assistant Community](https://community.home-assistant.io/)
-4. **Report a Bug**: [Create New Issue](https://github.com/L-Hall/flowhome-integration/issues/new)
+4. **Report a Bug**: [Create New Issue](https://github.com/L-Hall/tend-integration/issues/new)
 
 ### Providing Feedback
 
@@ -352,8 +350,8 @@ Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTIN
 
 ```bash
 # Clone the repository
-git clone https://github.com/L-Hall/flowhome-integration.git
-cd flowhome-integration
+git clone https://github.com/L-Hall/tend-integration.git
+cd tend-integration
 
 # Create virtual environment
 python -m venv venv
@@ -378,7 +376,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Home Assistant community for the amazing platform
 - HACS team for simplifying custom integration distribution
-- All contributors and testers who help improve FlowHome
+- All contributors and testers who help improve Tend
 
 ---
 

@@ -1,4 +1,4 @@
-"""Button platform for FlowHome."""
+"""Button platform for Tend."""
 from __future__ import annotations
 
 from typing import Any
@@ -19,7 +19,7 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up FlowHome buttons."""
+    """Set up Tend buttons."""
     coordinator: FlowHomeCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     
     entities: list[FlowHomeButton] = []
@@ -43,7 +43,7 @@ async def async_setup_entry(
 
 
 class FlowHomeButton(CoordinatorEntity[FlowHomeCoordinator], ButtonEntity):
-    """FlowHome button to complete a chore."""
+    """Tend button to complete a chore."""
     
     def __init__(
         self,
@@ -60,9 +60,9 @@ class FlowHomeButton(CoordinatorEntity[FlowHomeCoordinator], ButtonEntity):
         self._attr_icon = "mdi:check-circle"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, config_entry.data["host"])},
-            name="FlowHome",
-            manufacturer="FlowHome",
-            model="Hub",
+            name="Tend",
+            manufacturer="Unburden LLP",
+            model="Tend Hub",
         )
     
     async def async_press(self) -> None:

@@ -7,6 +7,7 @@ from typing import Any
 
 import aiohttp
 import async_timeout
+from urllib.parse import urlparse
 
 from .const import DEFAULT_PORT
 
@@ -25,10 +26,18 @@ class FlowHomeAPI:
     ) -> None:
         """Initialize API client."""
         self._session = session
-        self._host = host
-        self._port = port
+        # Allow full URLs (with scheme/port) or plain hostnames. Default to https when using port 443.
+        parsed = urlparse(host if "://" in host else f"//{host}", scheme="http")
+        self._host = parsed.hostname or host
+        self._port = parsed.port or port
+        self._scheme = parsed.scheme
+        if self._port in (443, 8443) and self._scheme == "http":
+            self._scheme = "https"
         self._api_key = api_key
-        self._base_url = f"http://{host}:{port}/api"
+        base = f"{self._scheme}://{self._host}"
+        if self._port:
+            base += f":{self._port}"
+        self._base_url = f"{base}/api"
     
     async def async_get_info(self) -> dict[str, Any]:
         """Get FlowHome app info."""
@@ -78,8 +87,8 @@ class FlowHomeAPI:
         try:
             async with async_timeout.timeout(10):
                 async with self._session.request(
-                    method,
-                    url,
+                    method=method,
+                    url=url,
                     json=json,
                     headers=headers,
                 ) as response:
