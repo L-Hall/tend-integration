@@ -55,8 +55,10 @@ class FlowHomeButton(CoordinatorEntity[FlowHomeCoordinator], ButtonEntity):
         super().__init__(coordinator)
         self._chore_id = chore_data.get("id")
         self._chore_name = chore_data.get("title", "Unknown")
+        room = chore_data.get("room")
+        display_name = f"{self._chore_name} ({room})" if room else self._chore_name
         self._attr_unique_id = f"{config_entry.entry_id}_chore_{self._chore_id}_complete"
-        self._attr_name = f"Complete {self._chore_name}"
+        self._attr_name = f"Complete {display_name}"
         self._attr_icon = "mdi:check-circle"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, config_entry.data["host"])},

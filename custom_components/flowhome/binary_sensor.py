@@ -60,8 +60,10 @@ class FlowHomeBinarySensor(CoordinatorEntity[FlowHomeCoordinator], BinarySensorE
         super().__init__(coordinator)
         self._chore_id = chore_data.get("id")
         self._chore_name = chore_data.get("title", "Unknown")
+        room = chore_data.get("room")
+        display_name = f"{self._chore_name} ({room})" if room else self._chore_name
         self._attr_unique_id = f"{config_entry.entry_id}_chore_{self._chore_id}_overdue"
-        self._attr_name = f"{self._chore_name} Overdue"
+        self._attr_name = f"{display_name} Overdue"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, config_entry.data["host"])},
             name="Tend",

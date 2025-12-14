@@ -97,6 +97,8 @@ async def async_setup_entry(
     for chore in chores:
         chore_id = chore.get("id")
         chore_name = chore.get("title", "Unknown")
+        room = chore.get("room")
+        display_name = f"{chore_name} ({room})" if room else chore_name
         
         # Last completed sensor for each chore
         entities.append(
@@ -182,8 +184,10 @@ class FlowHomeChoreSensor(CoordinatorEntity[FlowHomeCoordinator], SensorEntity):
         super().__init__(coordinator)
         self._chore_id = chore_data.get("id")
         self._chore_name = chore_data.get("title", "Unknown")
+        room = chore_data.get("room")
+        display_name = f"{self._chore_name} ({room})" if room else self._chore_name
         self._attr_unique_id = f"{config_entry.entry_id}_chore_{self._chore_id}"
-        self._attr_name = f"Chore: {self._chore_name}"
+        self._attr_name = f"Chore: {display_name}"
         self._attr_icon = "mdi:broom"
         self._attr_device_class = SensorDeviceClass.TIMESTAMP
         self._attr_device_info = DeviceInfo(
