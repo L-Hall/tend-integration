@@ -12,12 +12,11 @@ Tend is a gamified household chore management system that helps families track a
 
 ### Key Features
 
-- 🎯 **Track chore completion** with real-time sensors
+- 🎯 **Track chores** with one sensor per chore
+- ✅ **Complete chores** directly from Home Assistant
 - 🏆 **Monitor points and streaks** for family members
-- 🔔 **Get alerts** when chores are overdue
-- 🤖 **Automate rewards** based on chore completion
+- 🤖 **Automate rewards** based on chore state changes
 - 📊 **View household statistics** in your dashboard
-- 🎮 **Control chores** through voice assistants
 
 ---
 
@@ -171,9 +170,6 @@ Once configured, Tend creates these entities in Home Assistant:
 - `sensor.flowhome_household_points` - Total household points
 - `sensor.flowhome_[chore]_last_completed` - When chore was last done
 
-### Binary Sensors 🔴🟢
-- `binary_sensor.flowhome_[chore]_overdue` - Is the chore overdue?
-
 ### Buttons 🔘
 - `button.flowhome_complete_[chore]` - Mark chore as complete
 
@@ -216,9 +212,9 @@ automation:
       - platform: time
         at: "08:00:00"
     condition:
-      - condition: state
-        entity_id: binary_sensor.flowhome_make_bed_overdue
-        state: "on"
+      - condition: template
+        value_template: >
+          {{ as_datetime(state_attr('sensor.flowhome_make_bed_last_completed', 'next_due')) < now() }}
     action:
       - service: notify.mobile_app_rileys_phone
         data:
